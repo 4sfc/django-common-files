@@ -26,6 +26,7 @@ class StartTimeListFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
+        '''Return queryset of an hour-long period from start time.'''
         if self.value() is None:
             return queryset.all()
         start = self.value()
