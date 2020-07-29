@@ -7,7 +7,14 @@ class CommonFilesUtils:
 
     @staticmethod
     def get_active_queryset(app_label, model):
-        '''Return queryset of active values'''
+        '''
+        Return queryset of active values.
+
+        :param app_label string: App name
+        :param model string: Model name
+
+        :returns queryset: Queryset of active objects
+        '''
         queryset = None
         try:
             model = apps.get_model(app_label, model)
