@@ -1,11 +1,12 @@
-'''Base class'''
+"""Base class"""
 
 from django.db import models
 
 from common_files.models.timestamp import Timestamp
 
+
 class Base(Timestamp):
-    '''Abstract base class Base has label, value, and active fields'''
+    """Abstract base class Base has label, value, and active fields"""
 
     label = models.CharField(max_length=191, unique=True)
     value = models.CharField(max_length=10, unique=True)

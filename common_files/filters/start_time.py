@@ -1,10 +1,11 @@
-'''StartTimeListFilter class'''
+"""StartTimeListFilter class"""
 
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+
 class StartTimeListFilter(admin.SimpleListFilter):
-    '''StartTimeListFilter filters values larger than the requested value'''
+    """StartTimeListFilter filters values larger than the requested value"""
 
     title = _('start time range')
     parameter_name = 'start_time'
@@ -26,7 +27,7 @@ class StartTimeListFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        '''Return queryset of an hour-long period from start time.'''
+        """Return queryset of an hour-long period from start time."""
         if self.value() is None:
             return queryset.all()
         start = self.value()
