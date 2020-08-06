@@ -1,11 +1,12 @@
-'''TimestampWeekdayHour class'''
+"""TimestampWeekdayHour class"""
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class TimestampWeekdayHour(models.Model):
-    '''Abstract base class TimestampWeekdayHour has weekday and times'''
+    """Abstract base class TimestampWeekdayHour has weekday and times"""
 
     SUNDAY = 0
     MONDAY = 1

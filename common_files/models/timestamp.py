@@ -1,10 +1,11 @@
-'''Timestamp class'''
+"""Timestamp class"""
 
 from django.contrib.auth.models import User
 from django.db import models
 
+
 class Timestamp(models.Model):
-    '''Abstract base class Timestamp model has created and modified fields'''
+    """Abstract base class Timestamp model has created and modified fields"""
 
     created = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE,
