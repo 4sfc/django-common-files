@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from common_files.models.timestamp import Timestamp
 
-class TimestampWeekdayHour(models.Model):
+
+class TimestampWeekdayHour(Timestamp):
     """Abstract base class TimestampWeekdayHour has weekday and times"""
 
     SUNDAY = 0
