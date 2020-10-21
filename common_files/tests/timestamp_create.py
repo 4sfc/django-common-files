@@ -1,11 +1,9 @@
 """TimestampCreateViewTest"""
 
-from django.contrib.auth.models import User
-from django.db import connection
-from django.db import models
+from django.contrib.auth.models import AnonymousUser, User
+from django.db import connection, models
 from django.db.utils import ProgrammingError
-from django.test import RequestFactory
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 
 from common_files.models.timestamp import Timestamp
 from common_files.views.timestamp import TimestampCreateView
@@ -45,14 +43,27 @@ class TimestampCreateViewTest(TestCase):
         request_factory = RequestFactory()
         cls.request = request_factory.get('/common_files/view/timestampchild')
 
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            with connection.schema_editor() as editor:
+                editor.delete_model(cls.model)
+            super().tearDownClass()
+        except ProgrammingError:
+            pass
+
     def test_form_valid_with_anonymous_user(self):
         """Test form_valid has request with anonymous user"""
-        self.request.user = None
+        self.request.user = AnonymousUser()
         view_i = self.view(**{'request': self.request})
         modelform = view_i.get_form_class()
         form = modelform(data={'name': 'testing'})
         http_request = view_i.form_valid(form)
         self.assertEqual(http_request.url, '/success')
+        self.assertIsNone(form.instance.modified_by)
+        self.assertIsNone(form.instance.created_by)
+        self.assertIsNotNone(form.instance.modified)
+        self.assertIsNotNone(form.instance.created)
 
     def test_form_valid_with_known_user(self):
         """Test form_valid has request with known user"""
@@ -63,3 +74,8 @@ class TimestampCreateViewTest(TestCase):
         form = modelform(data={'name': 'testing'})
         http_request = view_i.form_valid(form)
         self.assertEqual(http_request.url, '/success')
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.instance.modified_by, self.request.user)
+        self.assertEqual(form.instance.created_by, self.request.user)
+        self.assertIsNotNone(form.instance.modified)
+        self.assertIsNotNone(form.instance.created)
